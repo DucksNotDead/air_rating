@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: AppFont;
+  src: url("../public/Montserrat.ttf");
+}
+
+* {
+  font-size: 14px;
+  color: theme('colors.black');
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: theme('colors.darkGrey');
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: theme('colors.darkGrey')
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
