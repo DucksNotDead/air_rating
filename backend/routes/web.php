@@ -13,7 +13,7 @@ Route::get('/', function () {
 });
 
 Route::get('api/test', function () {
-    $process = new Process(['python3', __DIR__.'/test.py']);
+    $process = new Process(['node', __DIR__.'/test.js']);
     $process->run();
 
     if (!$process->isSuccessful()) {
@@ -21,10 +21,6 @@ Route::get('api/test', function () {
     }
 
     echo $process->getOutput();
-
-    $companys = DB::table('airports')->limit(10)->get();
-
-    dd($companys);
 });
 
 Route::get('/api/airports', [AirportController::class, 'index']);
