@@ -35,7 +35,7 @@ h3 {
 }
 
 .app-page {
-  @apply w-full flex flex-col p-md
+  @apply w-full flex flex-col p-md;
   max-width: 1040px;
 }
 
