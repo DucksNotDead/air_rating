@@ -15,11 +15,18 @@ class FlightController extends Controller
             return $flights->items();
         }
 
-        $limit = $request->input('limit');
+        $limit = $request->input('limit', 10);
         if ($limit) {
             $flights = Flight::limit($limit)->get();
         } else {
             $flights = Flight::all();
+        }
+
+        if ($request->has('from') && $request->has('to')) {
+            $from = $request->input('from');
+            $to = $request->input('to');
+            $flights = Flight::orWhere('departure_code', '=', $from)->where('arrival_code','=', $to)->orderBy('rating')->limit($limit)->get();
+            return $flights;
         }
 
         return $flights;
