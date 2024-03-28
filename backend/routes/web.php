@@ -33,14 +33,14 @@ Route::get('/api/airports/{airport}', [AirportController::class, 'show']);
 Route::put('/api/airports/{airport}', [AirportController::class, 'update']);
 Route::delete('/api/airports/{airport}', [AirportController::class, 'destroy']);
 
-Route::get('/api/companies', [AirportController::class, 'index']);
-Route::post('/api/companies', [AirportController::class, 'store']);
-Route::get('/api/companies/{company}', [AirportController::class, 'show']);
-Route::put('/api/companies/{company}', [AirportController::class, 'update']);
-Route::delete('/api/companies/{company}', [AirportController::class, 'destroy']);
+Route::get('/api/companies', [CompanyController::class, 'index']);
+Route::post('/api/companies', [CompanyController::class, 'store']);
+Route::get('/api/companies/{company}', [CompanyController::class, 'show']);
+Route::put('/api/companies/{company}', [CompanyController::class, 'update']);
+Route::delete('/api/companies/{company}', [CompanyController::class, 'destroy']);
 
-Route::get('/api/flights', [AirportController::class, 'index']);
-Route::post('/api/flights', [AirportController::class, 'store']);
-Route::get('/api/flights/{flight}', [AirportController::class, 'show']);
-Route::put('/api/flights/{flight}', [AirportController::class, 'update']);
-Route::delete('/api/flights/{flight}', [AirportController::class, 'destroy']);
+Route::get('/api/flights', [FlightController::class, 'index']);
+Route::post('/api/flights', [FlightController::class, 'store']);
+Route::get('/api/flights/{flight}', [FlightController::class, 'show']);
+Route::put('/api/flights/{flight}', [FlightController::class, 'update']);
+Route::delete('/api/flights/{flight}', [FlightController::class, 'destroy']);
