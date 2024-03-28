@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AirportController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\FlightController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Process\Process;
@@ -26,3 +28,7 @@ Route::get('api/test', function () {
 });
 
 Route::get('api/airports', AirportController::class.'@index');
+
+Route::get('api/flights', FlightController::class.'@index');
+
+Route::get('api/companies', CompanyController::class.'@index');

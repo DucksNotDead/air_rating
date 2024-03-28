@@ -9,6 +9,8 @@ class Airport extends Model
 {
     use HasFactory;
 
+    protected $table = 'airports';
+
     protected $fillable = [
         'code',
         'name',
