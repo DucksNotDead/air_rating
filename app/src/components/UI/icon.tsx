@@ -2,8 +2,8 @@ import React from 'react';
 
 const Icon = ({ name, size = 28, onClick}: {
   name: string
-  size: number
-  onClick?: () => {}
+  size?: number
+  onClick?: () => void
 }) => {
   return (
       <div onClick={() => onClick&& onClick()} className={`app-icon${onClick? ' cursor-pointer' : ''}`} style={{ width: size, height: 'auto' }}>
