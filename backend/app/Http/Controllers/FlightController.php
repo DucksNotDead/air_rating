@@ -27,21 +27,29 @@ class FlightController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'company_id' => 'required',
-            'code' => 'required',
-            'departure_code' => 'required',
-            'arrival_code' => 'required',
-            'plan_departure' => 'required',
-            'plan_arrival' => 'required',
-            'fact_departure' => 'required',
-            'fact_arrival' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'company_id' => 'required',
+                'code' => 'required',
+                'departure_code' => 'required',
+                'arrival_code' => 'required',
+                'plan_departure' => 'required',
+                'plan_arrival' => 'required',
+                'fact_departure' => 'required',
+                'fact_arrival' => 'required',
+                'departure_delay_minutes' => 'required',
+                'arrival_delay_minutes' => 'required',
+                'rating' => 'required'
+            ]);
 
-        $flight = Flight::create($request->all());
+            $flight = Flight::create($request->all());
 
-        return response()->json($flight, 201);
+            return response()->json($flight, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Произошла ошибка при создании рейса: ' . $e->getMessage()], 500);
+        }
     }
+
 
     public function show(Flight $flight)
     {
@@ -59,6 +67,9 @@ class FlightController extends Controller
             'plan_arrival' => 'required',
             'fact_departure' => 'required',
             'fact_arrival' => 'required',
+            'departure_delay_minutes' => 'required',
+            'arrival_delay_minutes' => 'required',
+            'rating' => 'required'
         ]);
 
         $flight->update($request->all());

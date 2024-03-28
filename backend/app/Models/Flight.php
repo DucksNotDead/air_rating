@@ -16,8 +16,12 @@ class Flight extends Model
         'code',
         'departure_code',
         'arrival_code',
+        'plan_departure',
         'plan_arrival',
         'fact_departure',
         'fact_arrival',
+        'departure_delay_minutes',
+        'arrival_delay_minutes',
+        'rating'
     ];
 }

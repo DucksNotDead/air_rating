@@ -16,16 +16,21 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'rating' => 'required',
-            'full_name' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required',
+                'full_name' => 'required',
+                'rating' => 'required',
+            ]);
 
-        $company = Company::create($request->all());
+            $company = Company::create($request->all());
 
-        return response()->json($company, 201);
+            return response()->json($company, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Произошла ошибка при создании компании: ' . $e->getMessage()], 500);
+        }
     }
+
 
     public function show(Company $company)
     {
@@ -36,8 +41,8 @@ class CompanyController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'rating' => 'required',
             'full_name' => 'required',
+            'rating' => 'required',
         ]);
 
         $company->update($request->all());

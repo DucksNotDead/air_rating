@@ -13,5 +13,7 @@ class Company extends Model
 
     protected $fillable = [
         'name',
+        'full_name',
+        'rating'
     ];
 }

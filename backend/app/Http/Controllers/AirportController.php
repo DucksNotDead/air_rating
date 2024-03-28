@@ -19,7 +19,7 @@ class AirportController extends Controller
         if ($limit) {
             $airports = Airport::limit($limit)->get();
         } else {
-            $airports = Airport::all();
+            $airports = Airport::limit(10)->get();;
         }
 
         return $airports;
@@ -27,17 +27,21 @@ class AirportController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'code' => 'required',
-            'name' => 'required',
-            'city' => 'required',
-            'coordinates' => 'required',
-            'region' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'code' => 'required',
+                'name' => 'required',
+                'city' => 'required',
+                'coordinates' => 'required',
+                'region' => 'required',
+            ]);
 
-        $airport = Airport::create($request->all());
+            $airport = Airport::create($request->all());
 
-        return response()->json($airport, 201);
+            return response()->json($airport, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Произошла ошибка при создании аэропорта: ' . $e->getMessage()], 500);
+        }
     }
 
     public function show(Airport $airport)
