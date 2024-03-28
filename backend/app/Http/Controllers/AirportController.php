@@ -9,6 +9,13 @@ class AirportController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->has('search')) {
+            $search = $request->get('search');
+
+            $airports = Airport::where('name', 'like', '%' . strtolower($search) . '%')->limit(5);
+            return $airports->get();
+        }
+        
         if ($request->has('page')) {
             $limit = $request->input('limit', 10);
             $airports = Airport::paginate($limit);
