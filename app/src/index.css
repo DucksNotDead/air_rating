@@ -35,8 +35,8 @@ h3 {
 }
 
 .app-page {
-  width: 100%;
-  max-width: 900px;
+  @apply w-full flex flex-col p-md
+  max-width: 1040px;
 }
 
 .app-icon {
@@ -52,4 +52,26 @@ h3 {
 
 .app-button {
   @apply select-none px-lg py-sm rounded text-white cursor-pointer text-[16px]
+}
+
+.app-modal-wrapper {
+  @apply
+  absolute
+  top-[0px] left-[0px] bottom-[0px] right-[0px]
+  flex items-center justify-center
+  ;
+  background-color: rgba(0,0,0,.15);
+  backdrop-filter: blur(3px);
+}
+.app-modal {
+  @apply
+  w-[600px]
+  min-h-[200px]
+  max-h-[360px]
+  bg-white
+  rounded
+  p-md
+  shadow-sm
+  flex
+  flex-col
 }
