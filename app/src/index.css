@@ -9,7 +9,8 @@
 
 * {
   font-size: 14px;
-  color: theme('colors.black');
+  font-weight: 500;
+  color: theme('colors.darkGrey');
 }
 
 h1 {
@@ -30,10 +31,25 @@ h3 {
 }
 
 .App {
-  @apply flex justify-center
+  @apply flex flex-col items-center
 }
 
 .app-page {
   width: 100%;
   max-width: 900px;
+}
+
+.app-icon {
+  @apply flex justify-center select-none
+}
+
+.app-input {
+  @apply outline-none bg-lightGrey text-darkGrey px-md py-sm rounded-full flex gap-xs text-[16px]
+}
+.app-input input {
+  @apply bg-transparent outline-none w-full
+}
+
+.app-button {
+  @apply select-none px-lg py-sm rounded text-white cursor-pointer text-[16px]
 }
