@@ -27,8 +27,20 @@ Route::get('api/test', function () {
     dd($companys);
 });
 
-Route::get('api/airports', AirportController::class.'@index');
+Route::get('/api/airports', [AirportController::class, 'index']);
+Route::post('/api/airports', [AirportController::class, 'store']);
+Route::get('/api/airports/{airport}', [AirportController::class, 'show']);
+Route::put('/api/airports/{airport}', [AirportController::class, 'update']);
+Route::delete('/api/airports/{airport}', [AirportController::class, 'destroy']);
 
-Route::get('api/flights', FlightController::class.'@index');
+Route::get('/api/companies', [AirportController::class, 'index']);
+Route::post('/api/companies', [AirportController::class, 'store']);
+Route::get('/api/companies/{company}', [AirportController::class, 'show']);
+Route::put('/api/companies/{company}', [AirportController::class, 'update']);
+Route::delete('/api/companies/{company}', [AirportController::class, 'destroy']);
 
-Route::get('api/companies', CompanyController::class.'@index');
+Route::get('/api/flights', [AirportController::class, 'index']);
+Route::post('/api/flights', [AirportController::class, 'store']);
+Route::get('/api/flights/{flight}', [AirportController::class, 'show']);
+Route::put('/api/flights/{flight}', [AirportController::class, 'update']);
+Route::delete('/api/flights/{flight}', [AirportController::class, 'destroy']);
