@@ -31,27 +31,37 @@ h3 {
 }
 
 .App {
-  @apply flex flex-col items-center
+  @apply flex flex-col items-center h-screen w-screen overflow-x-hidden
 }
 
 .app-page {
-  @apply w-full flex flex-col p-md;
+  @apply w-full h-full flex flex-col px-md;
   max-width: 1040px;
 }
 
 .app-icon {
-  @apply flex justify-center select-none
+  @apply flex justify-center select-none aspect-square
 }
 
 .app-input {
-  @apply outline-none bg-lightGrey text-darkGrey px-md py-sm rounded-full flex gap-xs text-[16px]
+  @apply outline-none bg-lightGrey text-darkGrey px-md py-sm rounded flex gap-xs text-[16px];
+  box-shadow: 0 0 0 2px rgba(0,0,0,0);
+  transition: 150ms;
 }
 .app-input input {
   @apply bg-transparent outline-none w-full
 }
 
+.app-input:focus {
+  box-shadow: 0 0 0 2px theme('colors.primary');
+}
+
+.error {
+  box-shadow: 0 0 0 2px theme('colors.red');
+}
+
 .app-button {
-  @apply select-none px-lg py-sm rounded text-white cursor-pointer text-[16px]
+  @apply select-none rounded text-white cursor-pointer text-[16px] flex items-center justify-center gap-sm
 }
 
 .app-modal-wrapper {
@@ -66,10 +76,9 @@ h3 {
 .app-modal {
   @apply
   w-[600px]
-  min-h-[200px]
   max-h-[360px]
   bg-white
-  rounded
+  rounded-md
   p-md
   shadow-sm
   flex

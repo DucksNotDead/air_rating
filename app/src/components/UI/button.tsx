@@ -12,7 +12,11 @@ const Button = (props: {
           whileHover={{ opacity: .7 }}
           whileTap={{ scale: .97 }}
           onClick={props.onClick}
-          className={"app-button" + (props.color? (" bg-" + props.color) : " bg-primary") + (props.className? (" " + props.className) : "")}
+          className={"app-button"
+              + (props.color? (" bg-" + props.color) : " bg-primary")
+              + (props.className? (" " + props.className) : "")
+              + (props.color === "transparent"? "" : " px-lg py-sm")
+          }
       >
         { props.children }
       </motion.div>

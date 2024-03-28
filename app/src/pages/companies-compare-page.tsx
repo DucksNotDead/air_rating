@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FlightsPage = () => {
+const CompaniesComparePage = () => {
   return (
       <div>
 
@@ -8,4 +8,4 @@ const FlightsPage = () => {
   );
 };
 
-export default FlightsPage;
+export default CompaniesComparePage;

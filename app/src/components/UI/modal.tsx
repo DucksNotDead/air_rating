@@ -6,9 +6,9 @@ import Icon from "./icon";
 const ANIMATION = { duration: .2 }
 
 const Modal = forwardRef(({ title, children, onClose }: {
-  title: ''
+  title: string
   children: ReactNode
-  onClose: () => void
+  onClose?: () => void
 }, ref) => {
 
   const [isVisible, setIsVisible] = useState(false)

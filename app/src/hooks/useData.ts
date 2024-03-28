@@ -4,13 +4,13 @@ const useData = (dataType: 'companies'|'airports'|'flights', param?: number|{
   limit?: string
   page?: string
 }) => {
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<any|null>(null)
 
   const path = useMemo(() => {
     return `/${dataType}/${param
         ? typeof param === "number"
             ? param
-            : new URLSearchParams(param)
+            : '?' + new URLSearchParams(param)
         : ''
     }`
   }, [dataType, param])
