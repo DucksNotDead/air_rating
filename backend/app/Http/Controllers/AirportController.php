@@ -19,7 +19,7 @@ class AirportController extends Controller
         if ($limit) {
             $airports = Airport::limit($limit)->get();
         } else {
-            $airports = Airport::limit(10)->get();;
+            $airports = Airport::all();
         }
 
         return $airports;
@@ -33,7 +33,7 @@ class AirportController extends Controller
                 'name' => 'required',
                 'city' => 'required',
                 'coordinates' => 'required',
-                'region' => 'required',
+                'icao' => 'required',
             ]);
 
             $airport = Airport::create($request->all());
@@ -56,7 +56,7 @@ class AirportController extends Controller
             'name' => 'required',
             'city' => 'required',
             'coordinates' => 'required',
-            'region' => 'required',
+            'icao' => 'required',
         ]);
 
         $airport->update($request->all());

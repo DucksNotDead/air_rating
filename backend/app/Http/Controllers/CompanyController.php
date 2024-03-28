@@ -20,7 +20,12 @@ class CompanyController extends Controller
             $request->validate([
                 'name' => 'required',
                 'full_name' => 'required',
-                'rating' => 'required',
+                'avg_rating' => 'required',
+                'avg_arrival_delay_minutes' => 'required',
+                'avg_delay_departure' => 'required',
+                'cnt_flights' => 'required',
+                'avg_solidity_departure' => 'required',
+                'avg_solidity_arrival' => 'required'
             ]);
 
             $company = Company::create($request->all());
@@ -42,7 +47,12 @@ class CompanyController extends Controller
         $request->validate([
             'name' => 'required',
             'full_name' => 'required',
-            'rating' => 'required',
+            'avg_rating' => 'required',
+            'avg_arrival_delay_minutes' => 'required',
+            'avg_delay_departure' => 'required',
+            'cnt_flights' => 'required',
+            'avg_solidity_departure' => 'required',
+            'avg_solidity_arrival' => 'required'
         ]);
 
         $company->update($request->all());

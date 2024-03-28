@@ -16,6 +16,6 @@ class Airport extends Model
         'name',
         'city',
         'coordinates',
-        'region'
+        'icao'
     ];
 }

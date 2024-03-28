@@ -14,6 +14,11 @@ class Company extends Model
     protected $fillable = [
         'name',
         'full_name',
-        'rating'
+        'avg_rating',
+        'avg_arrival_delay_minutes',
+        'avg_delay_departure',
+        'cnt_flights',
+        'avg_solidity_departure',
+        'avg_solidity_arrival'
     ];
 }

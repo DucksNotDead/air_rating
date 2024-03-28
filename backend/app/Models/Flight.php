@@ -22,6 +22,10 @@ class Flight extends Model
         'fact_arrival',
         'departure_delay_minutes',
         'arrival_delay_minutes',
+        'solidity_arrival',
+        'solidity_departure',
+        'checked',
+        'is_late',
         'rating'
     ];
 }
