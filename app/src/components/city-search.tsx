@@ -26,7 +26,6 @@ const CitySearch = forwardRef((props: {
 
   useEffect(() => {
     if (searchQuery?.length > 2) {
-      console.log(searchQuery)
       fetch('http://localhost:8000/api/airports/?search=' + searchQuery).then(async res => {
         if (res.ok) {
           const data = await res.json()

@@ -10,20 +10,32 @@ import {motion} from "framer-motion";
 const ANIMATION = { duration: .45 }
 const COLUMN_WIDTH = 110
 
+const headings = {
+  1: "Рейтинг компаний",
+  2: "Рейтинг компаний по рейсу"
+}
+
 const HomePage = () => {
 
   const companies: AppCompanyType[] = useData('companies')
   const navigate = useNavigate()
+
+  const [ratingHeading, setRatingHeading] = useState(headings["1"])
+
+  const [currentRatingCompanies, setCurrentRatingCompanies]
+      = useState<AppCompanyType[]>(companies)
 
   const [status, setStatus] =
       useState<'sleep'|'pending'|'error'>('sleep')
 
   const refreshRating = (data: any[]) => {
     setStatus(() => "sleep")
+    setRatingHeading(headings["2"])
+    setCurrentRatingCompanies(() => data)
   }
 
   const onError = () => {
-
+    console.log('error')
   }
 
   const variants = {
@@ -42,10 +54,11 @@ const HomePage = () => {
         <motion.div
             initial={variants.pending}
             animate={variants[status]}
+            transition={ANIMATION}
             className={"bg-lightGrey rounded-md w-full p-lg flex flex-col"}
         >
           <div className={"flex justify-between"}>
-            <h2 className={"text-black font-semibold text-[24px]"}>Рейтинг компаний</h2>
+            <h2 className={"text-black font-semibold text-[24px]"}>{ratingHeading}</h2>
             <div className={"flex-1 flex justify-end"}>
               <div style={{ width: COLUMN_WIDTH }} className={"flex justify-center"}>
                 <Icon name={"airplane"} size={32}/>
@@ -59,7 +72,7 @@ const HomePage = () => {
             </div>
           </div>
           <div className={"flex-1 flex flex-col gap-md mt-lg"}>
-            {companies?.sort((a,b) => -a.avg_rating - -b.avg_rating).map((company, index) => (
+            {currentRatingCompanies?.sort((a,b) => -a.avg_rating - -b.avg_rating).map((company, index) => (
                 <CompanyItem
                     key={company.id}
                     index={index}
