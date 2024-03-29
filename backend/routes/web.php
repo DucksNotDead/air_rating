@@ -4,7 +4,6 @@ use App\Http\Controllers\AirportController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\FlightController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 

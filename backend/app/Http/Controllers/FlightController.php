@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Models\Flight;
+
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class FlightController extends Controller
 {
@@ -25,8 +29,17 @@ class FlightController extends Controller
         if ($request->has('from') && $request->has('to')) {
             $from = $request->input('from');
             $to = $request->input('to');
-            $flights = Flight::orWhere('departure_code', '=', $from)->where('arrival_code','=', $to)->orderBy('rating')->limit($limit)->get();
-            return $flights;
+
+            $flights = Flight::orWhere('departure_code', '=', $from)
+                ->where('arrival_code', '=', $to)
+                ->limit($limit)
+                ->get();
+
+            $companyIds = $flights->pluck('company_id')->toArray();
+
+            $companies = Company::whereIn('id', $companyIds)->orderBy('avg_rating', 'desc')->get();
+
+            return $companies;
         }
 
         return $flights;
@@ -47,6 +60,15 @@ class FlightController extends Controller
             ]);
 
             $flight = Flight::create($request->all());
+
+            $process = new Process(['node', __DIR__ . '/test.js', $flight]);
+            $process->run();
+
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+
+            echo $process->getOutput();
 
             return response()->json($flight, 200);
         } catch (\Exception $e) {

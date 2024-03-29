@@ -59,13 +59,10 @@ paths:
                     type: string
                     description: Регион аэропорта
                     example: Asia/Yakutsk
-                required:
-                  - id
-                  - code
-                  - name
-                  - city
-                  - coordinates
-                  - region
+                  icao:
+                    type: string
+                    description: Международное обозначение
+                    example: "UEEE"
         "404":
           description: Аэропорт не найден
         "500":
@@ -112,12 +109,17 @@ paths:
                     type: string
                     description: Регион аэропорта
                     example: Asia/Yakutsk
+                  icao:
+                    type: string
+                    description: Международное обозначение
+                    example: "UEEE"
                 required:
                   - code
                   - name
                   - city
                   - coordinates
                   - region
+                  - icao
         "404":
           description: Аэропорт не найден
         "500":
@@ -177,13 +179,10 @@ paths:
                     type: string
                     description: Регион аэропорта
                     example: Asia/Yakutsk
-                required:
-                  - id
-                  - code
-                  - name
-                  - city
-                  - coordinates
-                  - region
+                  icao:
+                    type: string
+                    description: Международное обозначение
+                    example: "UEEE"
         "404":
           description: Аэропорт не найден
         "500":
@@ -203,7 +202,7 @@ paths:
       summary: Обновить конкретный аэропорт
       operationId: обновитьАэропорт
       parameters:
-        - name: airport
+        - name: airportId
           in: path
           description: ID аэропорта для обновления
           required: true
@@ -237,12 +236,17 @@ paths:
                     type: string
                     description: Регион аэропорта
                     example: Asia/Yakutsk
+                  icao:
+                    type: string
+                    description: Международное обозначение
+                    example: "UEEE"
                 required:
                   - code
                   - name
                   - city
                   - coordinates
                   - region
+                  - icao
         "404":
           description: Аэропорт не найден
         "500":
@@ -262,7 +266,7 @@ paths:
       summary: Удалить конкретный аэропорт
       operationId: удалитьАэропорт
       parameters:
-        - name: airport
+        - name: airportId
           in: path
           description: ID аэропорта для удаления
           required: true
@@ -271,42 +275,6 @@ paths:
       responses:
         "200":
           description: Аэропорт удален
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: Уникальный идентификатор аэропорта
-                    example: 1
-                  code:
-                    type: string
-                    description: Код аэропорта
-                    example: YKS
-                  name:
-                    type: string
-                    description: Название аэропорта
-                    example: Якутск
-                  city:
-                    type: string
-                    description: Город аэропорта
-                    example: Якутск
-                  coordinates:
-                    type: string
-                    description: Координаты аэропорта
-                    example: "(129.77099609375,62.093299865722656)"
-                  region:
-                    type: string
-                    description: Регион аэропорта
-                    example: Asia/Yakutsk
-                required:
-                  - id
-                  - code
-                  - name
-                  - city
-                  - coordinates
-                  - region
         "404":
           description: Аэропорт не найден
         "500":
@@ -345,47 +313,19 @@ paths:
       responses:
         "200":
           description: Список компаний
+        "404":
+          description: Компания не найдена
+        "500":
+          description: Внутренняя ошибка сервера
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      description: Уникальный идентификатор компании
-                      example: 1
-                    name:
-                      type: string
-                      description: Короткое название компании
-                      example: TS
-                    full_name:
-                      type: string
-                      description: Полное название компании
-                      example: Test
-                    rating:
-                      type: number
-                      description: Рейтинг компании
-                      example: 0.5
-                  required:
-                    - id
-                    - name
-                    - full_name
-                    - rating
-          "404":
-            description: Компания не найдена
-          "500":
-            description: Внутренняя ошибка сервера
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      description: Сообщение об ошибке
-                      example: "Произошла ошибка при создании компании: Internal Server Error"
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Сообщение об ошибке
+                    example: "Произошла ошибка при создании компании: Internal Server Error"
     post:
       tags:
         - Компании
@@ -397,39 +337,67 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Короткое название компании
-                      example: TS
-                    full_name:
-                      type: string
-                      description: Полное название компании
-                      example: Test
-                    rating:
-                      type: number
-                      description: Рейтинг компании
-                      example: 0.5
-                  required:
-                    - name
-                    - full_name
-                    - rating
-          "404":
-            description: Компания не найдена
-          "500":
-            description: Внутренняя ошибка сервера
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      description: Сообщение об ошибке
-                      example: "Произошла ошибка при создании компании: Internal Server Error"
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Название компании
+                    example: "Company A"
+                  full_name:
+                    type: string
+                    description: Полное название компании
+                    example: "Full Name of Company A"
+                  avg_rating:
+                    type: number
+                    format: float
+                    description: Средний рейтинг компании
+                    example: 0.94082
+                  avg_arrival_delay_minutes:
+                    type: number
+                    format: float
+                    description: Среднее время задержки прибытия в минутах
+                    example: 10.3
+                  avg_delay_departure:
+                    type: number
+                    format: float
+                    description: Средняя задержка вылета
+                    example: 5.7
+                  cnt_flights:
+                    type: integer
+                    description: Количество рейсов компании
+                    example: 100
+                  avg_solidity_departure:
+                    type: number
+                    format: float
+                    description: Средняя надежность вылетов
+                    example: 0.85
+                  avg_solidity_arrival:
+                    type: number
+                    format: float
+                    description: Средняя надежность прибытий
+                    example: 0.82
+                required:
+                  - name
+                  - full_name
+                  - avg_rating
+                  - avg_arrival_delay_minutes
+                  - avg_delay_departure
+                  - cnt_flights
+                  - avg_solidity_departure
+                  - avg_solidity_arrival
+        "404":
+          description: Компания не найдена
+        "500":
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Сообщение об ошибке
+                    example: "Произошла ошибка при создании компании: Internal Server Error"
 
   /api/companies/{companyId}:
     get:
@@ -447,54 +415,26 @@ paths:
       responses:
         "200":
           description: Компания найдена
+        "404":
+          description: Компания не найдена
+        "500":
+          description: Внутренняя ошибка сервера
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      description: Уникальный идентификатор компании
-                      example: 1
-                    name:
-                      type: string
-                      description: Короткое название компании
-                      example: TS
-                    full_name:
-                      type: string
-                      description: Полное название компании
-                      example: Test
-                    rating:
-                      type: number
-                      description: Рейтинг компании
-                      example: 0.5
-                  required:
-                    - id
-                    - name
-                    - full_name
-                    - rating
-          "404":
-            description: Компания не найдена
-          "500":
-            description: Внутренняя ошибка сервера
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      description: Сообщение об ошибке
-                      example: "Произошла ошибка при создании компании: Internal Server Error"
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Сообщение об ошибке
+                    example: "Произошла ошибка при создании компании: Internal Server Error"
     put:
       tags:
         - Компании
       summary: Обновить конкретную компанию
       operationId: обновитьКомпанию
       parameters:
-        - name: company
+        - name: companyId
           in: path
           description: ID компании для обновления
           required: true
@@ -506,46 +446,74 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Короткое название компании
-                      example: TS
-                    full_name:
-                      type: string
-                      description: Полное название компании
-                      example: Test
-                    rating:
-                      type: number
-                      description: Рейтинг компании
-                      example: 0.5
-                  required:
-                    - name
-                    - full_name
-                    - rating
-          "404":
-            description: Компания не найдена
-          "500":
-            description: Внутренняя ошибка сервера
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      description: Сообщение об ошибке
-                      example: "Произошла ошибка при создании компании: Internal Server Error"
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Название компании
+                    example: "Company A"
+                  full_name:
+                    type: string
+                    description: Полное название компании
+                    example: "Full Name of Company A"
+                  avg_rating:
+                    type: number
+                    format: float
+                    description: Средний рейтинг компании
+                    example: 0.94082
+                  avg_arrival_delay_minutes:
+                    type: number
+                    format: float
+                    description: Среднее время задержки прибытия в минутах
+                    example: 10.3
+                  avg_delay_departure:
+                    type: number
+                    format: float
+                    description: Средняя задержка вылета
+                    example: 5.7
+                  cnt_flights:
+                    type: integer
+                    description: Количество рейсов компании
+                    example: 100
+                  avg_solidity_departure:
+                    type: number
+                    format: float
+                    description: Средняя надежность вылетов
+                    example: 0.85
+                  avg_solidity_arrival:
+                    type: number
+                    format: float
+                    description: Средняя надежность прибытий
+                    example: 0.82
+                required:
+                  - name
+                  - full_name
+                  - avg_rating
+                  - avg_arrival_delay_minutes
+                  - avg_delay_departure
+                  - cnt_flights
+                  - avg_solidity_departure
+                  - avg_solidity_arrival
+        "404":
+          description: Компания не найдена
+        "500":
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Сообщение об ошибке
+                    example: "Произошла ошибка при создании компании: Internal Server Error"
     delete:
       tags:
         - Компании
       summary: Удалить конкретную компанию
       operationId: удалитьКомпанию
       parameters:
-        - name: company
+        - name: companyId
           in: path
           description: ID компании для удаления
           required: true
@@ -554,47 +522,19 @@ paths:
       responses:
         "200":
           description: Компания удалена
+        "404":
+          description: Компания не найдена
+        "500":
+          description: Внутренняя ошибка сервера
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      description: Уникальный идентификатор компании
-                      example: 1
-                    name:
-                      type: string
-                      description: Короткое название компании
-                      example: TS
-                    full_name:
-                      type: string
-                      description: Полное название компании
-                      example: Test
-                    rating:
-                      type: number
-                      description: Рейтинг компании
-                      example: 0.5
-                  required:
-                    - id
-                    - name
-                    - full_name
-                    - rating
-          "404":
-            description: Компания не найдена
-          "500":
-            description: Внутренняя ошибка сервера
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      description: Сообщение об ошибке
-                      example: "Произошла ошибка при создании компании: Internal Server Error"
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Сообщение об ошибке
+                    example: "Произошла ошибка при создании компании: Internal Server Error"
 
   /api/flights:
     get:
@@ -603,6 +543,12 @@ paths:
       summary: Получить все рейсы
       operationId: получитьРейсы
       parameters:
+        - in: query
+          name: search
+          required: false
+          description: Поиск по городам
+          schema:
+            type: string
         - in: query
           name: page
           required: false
@@ -620,6 +566,28 @@ paths:
       responses:
         "200":
           description: Список рейсов
+        "404":
+          description: Рейс не найдена
+        "500":
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Сообщение об ошибке
+                    example: "Произошла ошибка при создании рейса: Internal Server Error"
+
+    post:
+      tags:
+        - Вылеты
+      summary: Создать новый рейс
+      operationId: создатьРейс
+      responses:
+        "200":
+          description: Успешно создано
           content:
             application/json:
               schema:
@@ -672,95 +640,6 @@ paths:
                   arrival_delay_minutes:
                     type: integer
                     description: Задержка прибытия в минутах
-                    example: null
-                  rating:
-                    type: number
-                    description: Рейтинг рейса
-                    example: null
-                required:
-                  - id
-                  - company_id
-                  - code
-                  - departure_code
-                  - arrival_code
-                  - plan_departure
-                  - plan_arrival
-                  - fact_departure
-                  - fact_arrival
-        "404":
-          description: Рейс не найдена
-        "500":
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Сообщение об ошибке
-                    example: "Произошла ошибка при создании рейса: Internal Server Error"
-
-    post:
-      tags:
-        - Вылеты
-      summary: Создать новый рейс
-      operationId: создатьРейс
-      responses:
-        "200":
-          description: Успешно создано
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  company_id:
-                    type: integer
-                    description: Уникальный идентификатор авиакомпании
-                    example: 1
-                  code:
-                    type: string
-                    description: Код рейса
-                    example: "6329"
-                  departure_code:
-                    type: string
-                    description: Код аэропорта вылета
-                    example: "VVO"
-                  arrival_code:
-                    type: string
-                    description: Код аэропорта прибытия
-                    example: "KHV"
-                  plan_departure:
-                    type: string
-                    format: date-time
-                    description: Плановая дата и время вылета
-                    example: "2022-08-15 04:45:00+05"
-                  plan_arrival:
-                    type: string
-                    format: date-time
-                    description: Плановая дата и время прибытия
-                    example: "2022-08-15 05:35:00+05"
-                  fact_departure:
-                    type: string
-                    format: date-time
-                    description: Фактическая дата и время вылета
-                    example: "2022-08-15 04:46:00+05"
-                  fact_arrival:
-                    type: string
-                    format: date-time
-                    description: Фактическая дата и время прибытия
-                    example: "2022-08-15 05:37:00+05"
-                  departure_delay_minutes:
-                    type: integer
-                    description: Задержка вылета в минутах
-                    example: null
-                  arrival_delay_minutes:
-                    type: integer
-                    description: Задержка прибытия в минутах
-                    example: null
-                  rating:
-                    type: number
-                    description: Рейтинг рейса
                     example: null
                 required:
                   - company_id
@@ -801,6 +680,34 @@ paths:
       responses:
         "200":
           description: Рейс найден
+        "404":
+          description: Рейс не найдена
+        "500":
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Сообщение об ошибке
+                    example: "Произошла ошибка при создании рейса: Internal Server Error"
+    put:
+      tags:
+        - Вылеты
+      summary: Обновить конкретный рейс
+      operationId: обновитьРейс
+      parameters:
+        - name: flightId
+          in: path
+          description: ID рейса для обновления
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Рейс обновлен
           content:
             application/json:
               schema:
@@ -853,101 +760,6 @@ paths:
                   arrival_delay_minutes:
                     type: integer
                     description: Задержка прибытия в минутах
-                    example: null
-                  rating:
-                    type: number
-                    description: Рейтинг рейса
-                    example: null
-                required:
-                  - id
-                  - company_id
-                  - code
-                  - departure_code
-                  - arrival_code
-                  - plan_departure
-                  - plan_arrival
-                  - fact_departure
-                  - fact_arrival
-        "404":
-          description: Рейс не найдена
-        "500":
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Сообщение об ошибке
-                    example: "Произошла ошибка при создании рейса: Internal Server Error"
-    put:
-      tags:
-        - Вылеты
-      summary: Обновить конкретный рейс
-      operationId: обновитьРейс
-      parameters:
-        - name: flight
-          in: path
-          description: ID рейса для обновления
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: Рейс обновлен
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  company_id:
-                    type: integer
-                    description: Уникальный идентификатор авиакомпании
-                    example: 1
-                  code:
-                    type: string
-                    description: Код рейса
-                    example: "6329"
-                  departure_code:
-                    type: string
-                    description: Код аэропорта вылета
-                    example: "VVO"
-                  arrival_code:
-                    type: string
-                    description: Код аэропорта прибытия
-                    example: "KHV"
-                  plan_departure:
-                    type: string
-                    format: date-time
-                    description: Плановая дата и время вылета
-                    example: "2022-08-15 04:45:00+05"
-                  plan_arrival:
-                    type: string
-                    format: date-time
-                    description: Плановая дата и время прибытия
-                    example: "2022-08-15 05:35:00+05"
-                  fact_departure:
-                    type: string
-                    format: date-time
-                    description: Фактическая дата и время вылета
-                    example: "2022-08-15 04:46:00+05"
-                  fact_arrival:
-                    type: string
-                    format: date-time
-                    description: Фактическая дата и время прибытия
-                    example: "2022-08-15 05:37:00+05"
-                  departure_delay_minutes:
-                    type: integer
-                    description: Задержка вылета в минутах
-                    example: null
-                  arrival_delay_minutes:
-                    type: integer
-                    description: Задержка прибытия в минутах
-                    example: null
-                  rating:
-                    type: number
-                    description: Рейтинг рейса
                     example: null
                 required:
                   - company_id
@@ -977,7 +789,7 @@ paths:
       summary: Удалить конкретный рейс
       operationId: удалитьРейс
       parameters:
-        - name: flight
+        - name: flightId
           in: path
           description: ID рейса для удаления
           required: true
@@ -986,73 +798,6 @@ paths:
       responses:
         "200":
           description: Рейс удален
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: Уникальный идентификатор рейса
-                    example: 1
-                  company_id:
-                    type: integer
-                    description: Уникальный идентификатор авиакомпании
-                    example: 1
-                  code:
-                    type: string
-                    description: Код рейса
-                    example: "6329"
-                  departure_code:
-                    type: string
-                    description: Код аэропорта вылета
-                    example: "VVO"
-                  arrival_code:
-                    type: string
-                    description: Код аэропорта прибытия
-                    example: "KHV"
-                  plan_departure:
-                    type: string
-                    format: date-time
-                    description: Плановая дата и время вылета
-                    example: "2022-08-15 04:45:00+05"
-                  plan_arrival:
-                    type: string
-                    format: date-time
-                    description: Плановая дата и время прибытия
-                    example: "2022-08-15 05:35:00+05"
-                  fact_departure:
-                    type: string
-                    format: date-time
-                    description: Фактическая дата и время вылета
-                    example: "2022-08-15 04:46:00+05"
-                  fact_arrival:
-                    type: string
-                    format: date-time
-                    description: Фактическая дата и время прибытия
-                    example: "2022-08-15 05:37:00+05"
-                  departure_delay_minutes:
-                    type: integer
-                    description: Задержка вылета в минутах
-                    example: null
-                  arrival_delay_minutes:
-                    type: integer
-                    description: Задержка прибытия в минутах
-                    example: null
-                  rating:
-                    type: number
-                    description: Рейтинг рейса
-                    example: null
-                required:
-                  - id
-                  - company_id
-                  - code
-                  - departure_code
-                  - arrival_code
-                  - plan_departure
-                  - plan_arrival
-                  - fact_departure
-                  - fact_arrival
         "404":
           description: Рейс не найдена
         "500":

@@ -12,10 +12,11 @@ class AirportController extends Controller
         if ($request->has('search')) {
             $search = $request->get('search');
 
-            $airports = Airport::where('name', 'like', '%' . strtolower($search) . '%')->limit(5);
+            $airports = Airport::where('city', 'LIKE', '%' . $search . '%');
+
             return $airports->get();
         }
-        
+
         if ($request->has('page')) {
             $limit = $request->input('limit', 10);
             $airports = Airport::paginate($limit);
