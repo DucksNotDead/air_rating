@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from 'react';
 import Icon from "../components/UI/icon";
 import useData from "../hooks/useData";
 import { AppCompanyType } from "../constants/types";
@@ -24,7 +24,10 @@ const HomePage = () => {
   const [currentRatingCompanies, setCurrentRatingCompanies] =
     useState<AppCompanyType[]>(companies);
 
-  const [status, setStatus] = useState<"sleep" | "pending" | "error">("sleep");
+
+  const [status, setStatus] =
+      useState<'sleep'|'pending'|'error'>('pending')
+
 
   const refreshRating = (data: any[]) => {
     setStatus(() => "sleep");
@@ -41,6 +44,13 @@ const HomePage = () => {
     sleep: { translateY: 0, opacity: 1 },
     error: { translateY: 0, opacity: 1 },
   };
+
+  useEffect(() => {
+    if (companies) {
+      setCurrentRatingCompanies(companies)
+      setStatus(() => "sleep")
+    }
+  }, [companies]);
 
   return (
     <div className={"flex-1 flex flex-col gap-lg mt-[50px]"}>
@@ -114,41 +124,19 @@ const ColumnItem = (props: { text: string | number }) => (
   </div>
 );
 
-const CompanyItem = (props: {
-  index: number;
-  navigate: (path: string) => void;
-  company: AppCompanyType;
-}) => {
-  return props.company ? (
-    <div className={"flex items-center gap-md"}>
-      <div
-        className={
-          "flex items-center justify-center h-[32px] aspect-square rounded-full bg-primary text-white"
-        }
-      >
-        {props.index + 1}
+const CompanyItem = (props: { index: number, navigate: (path: string) => void, company: AppCompanyType }) => {
+  return props.company? (
+      <div className={"flex items-center gap-md"}>
+        <div className={"flex items-center justify-center h-[32px] aspect-square rounded-full bg-primary text-white"}>{ props.index+1 }</div>
+        <div className={"border-b-[2px] cursor-pointer"} onClick={() => props.navigate('/companies/' + props.company.id)}>{ props.company.full_name }</div>
+        <div className={"flex-1 flex justify-end"}>
+          <ColumnItem text={Number(props.company.avg_arrival_delay_minutes).toFixed(1) + " мин."}/>
+          <ColumnItem text={Number(props.company.avg_delay_departure).toFixed(1)  + " мин."}/>
+          <ColumnItem text={(Number(props.company.rating)*100).toFixed(2)}/>
+        </div>
       </div>
-      <div
-        className={"border-b-[2px] cursor-pointer"}
-        onClick={() => props.navigate("/companies/" + props.company.id)}
-      >
-        {props.company.full_name}
-      </div>
-      <div className={"flex-1 flex justify-end"}>
-        <ColumnItem
-          text={
-            Number(props.company.avg_arrival_delay_minutes).toFixed(1) + " мин."
-          }
-        />
-        <ColumnItem
-          text={Number(props.company.avg_delay_departure).toFixed(1) + " мин."}
-        />
-        <ColumnItem text={(Number(props.company.rating) * 100).toFixed(2)} />
-      </div>
-    </div>
-  ) : (
-    <></>
-  );
-};
+  ) : <></>
+}
 
-export default HomePage;
+// @ts-ignore
+export default HomePage

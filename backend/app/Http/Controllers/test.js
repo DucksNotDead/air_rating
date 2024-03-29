@@ -1,3 +1,5 @@
-const flight = process.argv[2];
+const json = process.argv[process.argv.length-1];
 
-console.log(flight);
+
+
+console.log(json);

@@ -12,7 +12,7 @@ Route::get('/', function () {
 });
 
 Route::get('api/test', function () {
-    $process = new Process(['node', __DIR__.'/test.js']);
+    $process = new Process(['node', __DIR__.'/test.js', ]);
     $process->run();
 
     if (!$process->isSuccessful()) {

@@ -61,7 +61,7 @@ const Header = () => {
               : company
                   ? (
                       <Button onClick={() => comparePopup.current.show(company)}>
-                        Сравнить c другой
+                        Сравнить c другими
                       </Button>
                   )
                   : <></>
