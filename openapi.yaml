@@ -93,6 +93,44 @@ paths:
         - Аэропорты
       summary: Создать новый аэропорт
       operationId: создатьАэропорт
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Объект рейса
+              properties:
+                code:
+                  type: string
+                  description: Код аэропорта
+                  example: YKS
+                name:
+                  type: string
+                  description: Название аэропорта
+                  example: Якутск
+                city:
+                  type: string
+                  description: Город аэропорта
+                  example: Якутск
+                coordinates:
+                  type: string
+                  description: Координаты аэропорта
+                  example: "(129.77099609375,62.093299865722656)"
+                region:
+                  type: string
+                  description: Регион аэропорта
+                  example: Asia/Yakutsk
+                icao:
+                  type: string
+                  description: Международное обозначение
+                  example: "UEEE"
+              required:
+                - code
+                - name
+                - city
+                - coordinates
+                - region
+                - icao
       responses:
         "200":
           description: Успешно создано
@@ -343,6 +381,59 @@ paths:
         - Компании
       summary: Создать новую компанию
       operationId: создатьКомпанию
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Объект рейса
+              properties:
+                name:
+                  type: string
+                  description: Название компании
+                  example: "Company A"
+                full_name:
+                  type: string
+                  description: Полное название компании
+                  example: "Full Name of Company A"
+                avg_rating:
+                  type: number
+                  format: float
+                  description: Средний рейтинг компании
+                  example: 0.94082
+                avg_arrival_delay_minutes:
+                  type: number
+                  format: float
+                  description: Среднее время задержки прибытия в минутах
+                  example: 10.3
+                avg_delay_departure:
+                  type: number
+                  format: float
+                  description: Средняя задержка вылета
+                  example: 5.7
+                cnt_flights:
+                  type: integer
+                  description: Количество рейсов компании
+                  example: 100
+                avg_solidity_departure:
+                  type: number
+                  format: float
+                  description: Средняя надежность вылетов
+                  example: 0.85
+                avg_solidity_arrival:
+                  type: number
+                  format: float
+                  description: Средняя надежность прибытий
+                  example: 0.82
+              required:
+                - name
+                - full_name
+                - avg_rating
+                - avg_arrival_delay_minutes
+                - avg_delay_departure
+                - cnt_flights
+                - avg_solidity_departure
+                - avg_solidity_arrival
       responses:
         "200":
           description: Успешно создано
@@ -603,6 +694,35 @@ paths:
         - Вылеты
       summary: Создать новый рейс
       operationId: создатьРейс
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Объект рейса
+              properties:
+                company_id:
+                  type: integer
+                  format: int64
+                  description: Уникальный идентификатор компании
+                  example: 1
+                code:
+                  type: string
+                  description: Код рейса
+                  example: "FL123"
+                departure_code:
+                  type: string
+                  description: Код аэропорта отправления
+                  example: "JFK"
+                arrival_code:
+                  type: string
+                  description: Код аэропорта прибытия
+                  example: "LAX"
+              required:
+                - company_id
+                - code
+                - departure_code
+                - arrival_code
       responses:
         "200":
           description: Успешно создано
@@ -613,52 +733,79 @@ paths:
                 properties:
                   id:
                     type: integer
+                    format: int64
                     description: Уникальный идентификатор рейса
                     example: 1
                   company_id:
                     type: integer
-                    description: Уникальный идентификатор авиакомпании
+                    format: int64
+                    description: Уникальный идентификатор компании
                     example: 1
                   code:
                     type: string
                     description: Код рейса
-                    example: "6329"
+                    example: "FL123"
                   departure_code:
                     type: string
-                    description: Код аэропорта вылета
-                    example: "VVO"
+                    description: Код аэропорта отправления
+                    example: "JFK"
                   arrival_code:
                     type: string
                     description: Код аэропорта прибытия
-                    example: "KHV"
+                    example: "LAX"
                   plan_departure:
                     type: string
                     format: date-time
-                    description: Плановая дата и время вылета
-                    example: "2022-08-15 04:45:00+05"
+                    description: Планируемое время отправления
+                    example: "2024-03-28T10:15:00Z"
                   plan_arrival:
                     type: string
                     format: date-time
-                    description: Плановая дата и время прибытия
-                    example: "2022-08-15 05:35:00+05"
+                    description: Планируемое время прибытия
+                    example: "2024-03-28T15:30:00Z"
                   fact_departure:
                     type: string
                     format: date-time
-                    description: Фактическая дата и время вылета
-                    example: "2022-08-15 04:46:00+05"
+                    description: Фактическое время отправления
+                    example: "2024-03-28T10:20:00Z"
                   fact_arrival:
                     type: string
                     format: date-time
-                    description: Фактическая дата и время прибытия
-                    example: "2022-08-15 05:37:00+05"
+                    description: Фактическое время прибытия
+                    example: "2024-03-28T15:35:00Z"
                   departure_delay_minutes:
-                    type: integer
-                    description: Задержка вылета в минутах
-                    example: null
+                    type: number
+                    format: float
+                    description: Задержка отправления в минутах
+                    example: 5.0
                   arrival_delay_minutes:
-                    type: integer
+                    type: number
+                    format: float
                     description: Задержка прибытия в минутах
-                    example: null
+                    example: 5.0
+                  solidity_arrival:
+                    type: number
+                    format: float
+                    description: Надежность прибытия
+                    example: 0.95
+                  solidity_departure:
+                    type: number
+                    format: float
+                    description: Надежность отправления
+                    example: 0.97
+                  checked:
+                    type: boolean
+                    description: Проверен ли рейс по внешнему сервису
+                    example: false
+                  is_late:
+                    type: boolean
+                    description: Задержан ли рейс
+                    example: false
+                  rating:
+                    type: number
+                    format: float
+                    description: Рейтинг рейса
+                    example: 0.869
                 required:
                   - company_id
                   - code

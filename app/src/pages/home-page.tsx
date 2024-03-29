@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import Icon from "../components/UI/icon";
 import useData from "../hooks/useData";
 import { AppCompanyType } from "../constants/types";
@@ -6,6 +6,8 @@ import Button from "../components/UI/button";
 import { useNavigate } from "react-router-dom";
 import BestCompanyFinder from "../components/best-company-finder";
 import { motion } from "framer-motion";
+import useLog from "../hooks/useLog";
+import RatingPage from "./rating-page";
 
 const ANIMATION = { duration: 0.45 };
 const COLUMN_WIDTH = 110;
@@ -24,10 +26,9 @@ const HomePage = () => {
   const [currentRatingCompanies, setCurrentRatingCompanies] =
     useState<AppCompanyType[]>(companies);
 
-
-  const [status, setStatus] =
-      useState<'sleep'|'pending'|'error'>('pending')
-
+  const [status, setStatus] = useState<"sleep" | "pending" | "error">(
+    "pending"
+  );
 
   const refreshRating = (data: any[]) => {
     setStatus(() => "sleep");
@@ -47,8 +48,8 @@ const HomePage = () => {
 
   useEffect(() => {
     if (companies) {
-      setCurrentRatingCompanies(companies)
-      setStatus(() => "sleep")
+      setCurrentRatingCompanies(companies);
+      setStatus(() => "sleep");
     }
   }, [companies]);
 
@@ -60,10 +61,11 @@ const HomePage = () => {
         onError={onError}
       />
       <motion.div
+        style={{ zIndex: 0 }}
         initial={variants.pending}
         animate={variants[status]}
         transition={ANIMATION}
-        className={"bg-lightGrey rounded-md w-full p-lg flex flex-col"}
+        className={"relative bg-lightGrey rounded-md w-full p-lg flex flex-col"}
       >
         <div className={"flex justify-between"}>
           <h2 className={"text-black font-semibold text-[24px]"}>
@@ -77,10 +79,22 @@ const HomePage = () => {
               <Icon name={"airplane"} size={32} />
             </div>
             <div
+              style={{ width: COLUMN_WIDTH }}
+              className={"flex justify-center"}
+            >
+              <Icon name={"shield"} size={24} />
+            </div>
+            <div
               style={{ width: COLUMN_WIDTH, rotate: "30deg" }}
               className={"flex justify-center"}
             >
               <Icon name={"airplane"} size={32} />
+            </div>
+            <div
+              style={{ width: COLUMN_WIDTH }}
+              className={"flex justify-center"}
+            >
+              <Icon name={"shield"} size={24} />
             </div>
             <div
               style={{ width: COLUMN_WIDTH }}
@@ -92,13 +106,22 @@ const HomePage = () => {
         </div>
         <div className={"flex-1 flex flex-col gap-md mt-lg"}>
           {currentRatingCompanies
-            ?.sort((a, b) => -a.rating - -b.rating)
-            .map((company, index) => (
+            ?.sort(
+              (a, b) =>
+                -a[
+                  ratingHeading === "Рейтинг компаний" ? "avg_rating" : "rating"
+                ] -
+                -b[
+                  ratingHeading === "Рейтинг компаний" ? "avg_rating" : "rating"
+                ]
+            )
+            ?.map((company, index) => (
               <CompanyItem
                 key={company.id}
                 index={index}
                 company={company}
                 navigate={navigate}
+                ratingHeading={ratingHeading}
               />
             ))}
         </div>
@@ -124,19 +147,59 @@ const ColumnItem = (props: { text: string | number }) => (
   </div>
 );
 
-const CompanyItem = (props: { index: number, navigate: (path: string) => void, company: AppCompanyType }) => {
-  return props.company? (
-      <div className={"flex items-center gap-md"}>
-        <div className={"flex items-center justify-center h-[32px] aspect-square rounded-full bg-primary text-white"}>{ props.index+1 }</div>
-        <div className={"border-b-[2px] cursor-pointer"} onClick={() => props.navigate('/companies/' + props.company.id)}>{ props.company.full_name }</div>
-        <div className={"flex-1 flex justify-end"}>
-          <ColumnItem text={Number(props.company.avg_arrival_delay_minutes).toFixed(1) + " мин."}/>
-          <ColumnItem text={Number(props.company.avg_delay_departure).toFixed(1)  + " мин."}/>
-          <ColumnItem text={(Number(props.company.rating)*100).toFixed(2)}/>
-        </div>
+const CompanyItem = (props: {
+  index: number;
+  navigate: (path: string) => void;
+  company: AppCompanyType;
+  ratingHeading: string;
+}) => {
+  return props.company ? (
+    <div className={"flex items-center gap-md"}>
+      <div
+        className={
+          "flex items-center justify-center h-[32px] aspect-square rounded-full bg-primary text-white"
+        }
+      >
+        {props.index + 1}
       </div>
-  ) : <></>
-}
+      <div
+        className={"border-b-[2px] cursor-pointer"}
+        onClick={() => props.navigate("/companies/" + props.company.id)}
+      >
+        {props.company.full_name}
+      </div>
+      <div className={"flex-1 flex justify-end"}>
+        <ColumnItem
+          text={
+            Number(props.company.avg_arrival_delay_minutes).toFixed(1) + " мин."
+          }
+        />
+        <ColumnItem
+          text={Number(props.company.avg_solidity_arrival).toFixed(3)}
+        />
+        <ColumnItem
+          text={Number(props.company.avg_delay_departure).toFixed(1) + " мин."}
+        />
+        <ColumnItem
+          text={Number(props.company.avg_solidity_departure).toFixed(3)}
+        />
+        <ColumnItem
+          text={(
+            Number(
+              props.company[
+                props.ratingHeading === "Рейтинг компаний"
+                  ? "avg_rating"
+                  : "rating"
+              ]
+            ) * 100
+          ).toFixed(2)}
+        />
+      </div>
+    </div>
+  ) : (
+    <></>
+  );
+};
 
 // @ts-ignore
-export default HomePage
+export default HomePage;
