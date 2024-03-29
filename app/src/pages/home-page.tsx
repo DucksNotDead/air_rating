@@ -5,9 +5,10 @@ import {AppCompanyType} from "../constants/types";
 import Button from "../components/UI/button";
 import {useNavigate} from "react-router-dom";
 import BestCompanyFinder from "../components/best-company-finder";
-import useLog from "../hooks/useLog";
+import {motion} from "framer-motion";
 
 const ANIMATION = { duration: .45 }
+const COLUMN_WIDTH = 110
 
 const HomePage = () => {
 
@@ -18,11 +19,17 @@ const HomePage = () => {
       useState<'sleep'|'pending'|'error'>('sleep')
 
   const refreshRating = (data: any[]) => {
-
+    setStatus(() => "sleep")
   }
 
   const onError = () => {
 
+  }
+
+  const variants = {
+    'pending': { translateY: 10, opacity: 0 },
+    'sleep': { translateY: 0, opacity: 1 },
+    'error': { translateY: 0, opacity: 1 }
   }
 
   return (
@@ -32,19 +39,31 @@ const HomePage = () => {
             onSuccess={refreshRating}
             onError={onError}
         />
-        <div className={"bg-lightGrey rounded-md w-full p-lg flex flex-col"}>
+        <motion.div
+            initial={variants.pending}
+            animate={variants[status]}
+            className={"bg-lightGrey rounded-md w-full p-lg flex flex-col"}
+        >
           <div className={"flex justify-between"}>
             <h2 className={"text-black font-semibold text-[24px]"}>Рейтинг компаний</h2>
-            <Icon name={"rating-chart"} size={32}/>
+            <div className={"flex-1 flex justify-end"}>
+              <div style={{ width: COLUMN_WIDTH }} className={"flex justify-center"}>
+                <Icon name={"airplane"} size={32}/>
+              </div>
+              <div style={{ width: COLUMN_WIDTH, rotate: '30deg' }}  className={"flex justify-center"}>
+                <Icon name={"airplane"} size={32}/>
+              </div>
+              <div style={{ width: COLUMN_WIDTH }}  className={"flex justify-center"}>
+                <Icon name={"rating-chart"} size={32}/>
+              </div>
+            </div>
           </div>
           <div className={"flex-1 flex flex-col gap-md mt-lg"}>
-            {companies?.sort((a,b) => -a.rating - -b.rating).map(({ id, full_name, rating }, index) => (
+            {companies?.sort((a,b) => -a.avg_rating - -b.avg_rating).map((company, index) => (
                 <CompanyItem
-                    key={id}
+                    key={company.id}
                     index={index}
-                    id={id}
-                    full_name={full_name}
-                    rating={rating}
+                    company={company}
                     navigate={navigate}
                 />
             ))}
@@ -53,25 +72,26 @@ const HomePage = () => {
             <div className={"text-primary"}>Показать больше</div>
             <Icon name={"arrow-right"}/>
           </Button>
-        </div>
+        </motion.div>
       </div>
   );
 };
 
-const CompanyItem = (props: {
-  index: number
-  id: number
-  full_name: string
-  rating: number
-  navigate: (path: string) => void
-}) => {
-  return (
+const ColumnItem = (props: { text: string|number }) =>
+    <div style={{ width: COLUMN_WIDTH }} className={"flex justify-center font-[600] pr-xs"}>{ props.text }</div>
+
+const CompanyItem = (props: { index: number, navigate: (path: string) => void, company: AppCompanyType }) => {
+  return props.company? (
       <div className={"flex items-center gap-md"}>
         <div className={"flex items-center justify-center h-[32px] aspect-square rounded-full bg-primary text-white"}>{ props.index+1 }</div>
-        <div className={"border-b-[2px] cursor-pointer"} onClick={() => props.navigate('/companies/' + props.id)}>{ props.full_name }</div>
-        <div className={"flex-1 flex justify-end font-[600] pr-xs"}>{ props.rating*100 }</div>
+        <div className={"border-b-[2px] cursor-pointer"} onClick={() => props.navigate('/companies/' + props.company.id)}>{ props.company.full_name }</div>
+        <div className={"flex-1 flex justify-end"}>
+          <ColumnItem text={Number(props.company.avg_arrival_delay_minutes).toFixed(1) + " мин."}/>
+          <ColumnItem text={Number(props.company.avg_delay_departure).toFixed(1)  + " мин."}/>
+          <ColumnItem text={(Number(props.company.avg_rating)*100).toFixed(2)}/>
+        </div>
       </div>
-  )
+  ) : <></>
 }
 
 export default HomePage;
