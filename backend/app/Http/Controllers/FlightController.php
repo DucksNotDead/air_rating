@@ -32,12 +32,34 @@ class FlightController extends Controller
 
             $flights = Flight::orWhere('departure_code', '=', $from)
                 ->where('arrival_code', '=', $to)
-                ->limit($limit)
                 ->get();
 
             $companyIds = $flights->pluck('company_id')->toArray();
 
-            $companies = Company::whereIn('id', $companyIds)->orderBy('avg_rating', 'desc')->get();
+            $companies = Company::whereIn('id', $companyIds)->get();
+
+            $companyRatings = [];
+
+            foreach ($flights as $flight) {
+                $companyId = $flight->company_id;
+                $arrivalSolidity = $flight->solidity_arrival;
+
+                $companyRatings[$companyId]['arrived'] = ($companyRatings[$companyId]['arrived'] ?? 0) + $arrivalSolidity;
+
+                $companyRatings[$companyId]['total'] = ($companyRatings[$companyId]['total'] ?? 0) + 1;
+            }
+
+            foreach ($companies as &$company) {
+                $companyId = $company->id;
+
+                if (!isset($companyRatings[$companyId]['arrived'])) {
+                    $company->rating = 0;
+                } else {
+                    $company->rating = 1 - ($companyRatings[$companyId]['arrived'] / $companyRatings[$companyId]['total']);
+                }
+            }
+
+            $companies = $companies->sortByDesc('rating');
 
             return $companies;
         }

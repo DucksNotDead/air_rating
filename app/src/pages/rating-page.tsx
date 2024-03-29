@@ -55,7 +55,7 @@ const RatingPage = () => {
           </div>
           <div className={"flex-1 flex flex-col gap-md mt-lg"}>
             {companies
-              ?.sort((a, b) => -a.avg_rating - -b.avg_rating)
+              ?.sort((a, b) => -a.rating - -b.rating)
               .map((company, index) => (
                 <CompanyItem
                   key={company.id}
@@ -109,9 +109,7 @@ const CompanyItem = (props: {
         {props.company.full_name}
       </div>
       <div className={"flex-1 flex justify-end"}>
-        <ColumnItem
-          text={(Number(props.company.avg_rating) * 100).toFixed(2)}
-        />
+        <ColumnItem text={(Number(props.company.rating) * 100).toFixed(2)} />
       </div>
     </div>
   ) : (

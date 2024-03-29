@@ -14,16 +14,28 @@ paths:
       operationId: получитьАэропорты
       parameters:
         - in: query
+          name: code
+          required: false
+          description: Код аэропорта
+          schema:
+            type: string
+        - in: query
+          name: search
+          required: false
+          description: Поиск по городам
+          schema:
+            type: string
+        - in: query
           name: page
           required: false
-          description: количество пропущенных записей
+          description: Количество пропущенных записей
           schema:
             type: integer
             format: int32
         - in: query
           name: limit
           required: false
-          description: максимальное количество возвращаемых записей
+          description: Максимальное количество возвращаемых записей
           schema:
             type: integer
             format: int32
@@ -553,12 +565,6 @@ paths:
           name: to
           required: false
           description: Куда прилетаем
-          schema:
-            type: string
-        - in: query
-          name: search
-          required: false
-          description: Поиск по городам
           schema:
             type: string
         - in: query
