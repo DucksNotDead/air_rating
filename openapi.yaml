@@ -544,6 +544,18 @@ paths:
       operationId: получитьРейсы
       parameters:
         - in: query
+          name: from
+          required: false
+          description: Откуда вылетаем
+          schema:
+            type: string
+        - in: query
+          name: to
+          required: false
+          description: Куда прилетаем
+          schema:
+            type: string
+        - in: query
           name: search
           required: false
           description: Поиск по городам
@@ -811,3 +823,7 @@ paths:
                     type: string
                     description: Сообщение об ошибке
                     example: "Произошла ошибка при создании рейса: Internal Server Error"
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/HealKnix/AirTail/1.0.0

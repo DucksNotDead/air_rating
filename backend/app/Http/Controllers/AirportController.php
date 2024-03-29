@@ -9,6 +9,14 @@ class AirportController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->has('code')) {
+            $code = $request->get('code');
+
+            $airports = Airport::where('code', '=', $code)->limit(1)->get();
+
+            return $airports;
+        }
+
         if ($request->has('search')) {
             $search = $request->get('search');
 
